@@ -16,7 +16,7 @@ type Trace struct {
 	textMapPropagator propagation.TextMapPropagator
 }
 
-func New(ctx context.Context, opts ...Option) (*Trace, error) {
+func NewTrace(ctx context.Context, opts ...Option) (*Trace, error) {
 	o := new(options)
 	o.apply(opts...)
 	o.init()

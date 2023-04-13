@@ -18,7 +18,6 @@ type WriterOptions struct {
 func (o *WriterOptions) Exporter(ctx context.Context) (sdktrace.SpanExporter, error) {
 	opts := []stdouttrace.Option{
 		stdouttrace.WithWriter(o.Writer),
-		stdouttrace.WithoutTimestamps(),
 	}
 	if o.PrettyPrint {
 		opts = append(opts, stdouttrace.WithPrettyPrint())

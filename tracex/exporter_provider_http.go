@@ -8,7 +8,7 @@ import (
 	"go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracehttp"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 
-	"github.com/go-leo/stringx"
+	"github.com/go-leo/gox/stringx"
 )
 
 type HTTPOptions struct {

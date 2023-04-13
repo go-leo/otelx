@@ -4,6 +4,7 @@ import (
 	"context"
 	"errors"
 
+	"go.opentelemetry.io/otel"
 	"go.opentelemetry.io/otel/propagation"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	"go.opentelemetry.io/otel/trace"
@@ -14,6 +15,7 @@ import (
 type Trace struct {
 	tracerProvider    trace.TracerProvider
 	textMapPropagator propagation.TextMapPropagator
+	err               error
 }
 
 func NewTrace(ctx context.Context, opts ...Option) (*Trace, error) {
@@ -57,8 +59,14 @@ func NewTrace(ctx context.Context, opts ...Option) (*Trace, error) {
 		tpOpts = append(tpOpts, sdktrace.WithRawSpanLimits(*o.RawSpanLimits))
 	}
 	tracerProvider := sdktrace.NewTracerProvider(tpOpts...)
-	propagator := propagation.NewCompositeTextMapPropagator(propagation.Baggage{}, propagation.TraceContext{})
+	propagator := propagation.NewCompositeTextMapPropagator(o.Propagators...)
 	return &Trace{tracerProvider: tracerProvider, textMapPropagator: propagator}, nil
+}
+
+func (trace *Trace) SetGlobal() *Trace {
+	otel.SetTracerProvider(trace.TracerProvider())
+	otel.SetTextMapPropagator(trace.TextMapPropagator())
+	return trace
 }
 
 func (trace *Trace) TracerProvider() trace.TracerProvider {

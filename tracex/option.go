@@ -2,6 +2,7 @@ package tracex
 
 import (
 	"go.opentelemetry.io/otel/attribute"
+	"go.opentelemetry.io/otel/propagation"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 
 	"github.com/go-leo/otelx/resourcex"
@@ -32,6 +33,7 @@ type options struct {
 	SpanProcessor sdktrace.SpanProcessor
 	// RawSpanLimits
 	RawSpanLimits *sdktrace.SpanLimits
+	Propagators   []propagation.TextMapPropagator
 }
 
 func (o *options) apply(opts ...Option) {
@@ -41,7 +43,12 @@ func (o *options) apply(opts ...Option) {
 }
 
 func (o *options) init() {
-
+	if o.Propagators == nil {
+		o.Propagators = []propagation.TextMapPropagator{
+			propagation.Baggage{},
+			propagation.TraceContext{},
+		}
+	}
 }
 
 type Option func(o *options)
@@ -115,5 +122,11 @@ func SpanProcessor(spanProcessor sdktrace.SpanProcessor) Option {
 func RawSpanLimits(limits *sdktrace.SpanLimits) Option {
 	return func(o *options) {
 		o.RawSpanLimits = limits
+	}
+}
+
+func Propagators(propagators ...propagation.TextMapPropagator) Option {
+	return func(o *options) {
+		o.Propagators = append(o.Propagators, propagators...)
 	}
 }

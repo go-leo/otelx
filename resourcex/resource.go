@@ -3,13 +3,15 @@ package resourcex
 import (
 	"context"
 
-	"github.com/go-leo/stringx"
+	"github.com/go-leo/gox/stringx"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/sdk/resource"
 )
 
+type ResourceFlag int
+
 const (
-	ResEnv = 1 << iota
+	ResEnv ResourceFlag = 1 << iota
 	ResHost
 	ResTelemetrySDK
 	ResOS
@@ -44,7 +46,7 @@ func (svc *Service) Attributes() []attribute.KeyValue {
 	return attrs
 }
 
-func NewResource(ctx context.Context, svc *Service, res int, attrs ...attribute.KeyValue) *resource.Resource {
+func NewResource(ctx context.Context, svc *Service, res ResourceFlag, attrs ...attribute.KeyValue) *resource.Resource {
 	opts := []resource.Option{resource.WithAttributes(append(attrs, svc.Attributes()...)...)}
 	if res&ResEnv != 0 {
 		opts = append(opts, resource.WithFromEnv())

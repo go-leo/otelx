@@ -2,11 +2,11 @@ package tracex
 
 import (
 	"context"
+	"net/http"
+	"runtime"
 
 	"go.opentelemetry.io/otel/exporters/jaeger"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
-
-	"github.com/go-leo/netx/httpx"
 )
 
 type JaegerOptions struct {
@@ -16,11 +16,13 @@ type JaegerOptions struct {
 }
 
 func (o *JaegerOptions) Exporter(ctx context.Context) (sdktrace.SpanExporter, error) {
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+	transport.MaxIdleConnsPerHost = runtime.GOMAXPROCS(0) + 1
 	endpoint := jaeger.WithCollectorEndpoint(
 		jaeger.WithEndpoint(o.Endpoint),
 		jaeger.WithUsername(o.Username),
 		jaeger.WithPassword(o.Password),
-		jaeger.WithHTTPClient(httpx.PooledClient()),
+		jaeger.WithHTTPClient(&http.Client{Transport: transport}),
 	)
 	return jaeger.New(endpoint)
 }

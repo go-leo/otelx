@@ -2,11 +2,11 @@ package tracex
 
 import (
 	"context"
+	"net/http"
+	"runtime"
 
 	"go.opentelemetry.io/otel/exporters/zipkin"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
-
-	"github.com/go-leo/netx/httpx"
 )
 
 type ZipkinOptions struct {
@@ -14,5 +14,7 @@ type ZipkinOptions struct {
 }
 
 func (o *ZipkinOptions) Exporter(ctx context.Context) (sdktrace.SpanExporter, error) {
-	return zipkin.New(o.URL, zipkin.WithClient(httpx.PooledClient()))
+	transport := http.DefaultTransport.(*http.Transport).Clone()
+	transport.MaxIdleConnsPerHost = runtime.GOMAXPROCS(0) + 1
+	return zipkin.New(o.URL, zipkin.WithClient(&http.Client{Transport: transport}))
 }

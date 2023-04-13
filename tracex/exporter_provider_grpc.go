@@ -10,7 +10,7 @@ import (
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/credentials"
 
-	"github.com/go-leo/stringx"
+	"github.com/go-leo/gox/stringx"
 )
 
 type GRPCOptions struct {

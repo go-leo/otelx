@@ -1,4 +1,4 @@
-module github.com/go-leo/otelx
+module github.com/go-leo/otelx/tracex
 
 go 1.18
 

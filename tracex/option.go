@@ -14,7 +14,7 @@ type options struct {
 	// Attributes trace需要一些额外的信息
 	Attributes []attribute.KeyValue
 	// Resources 资源
-	Resources int
+	Resources resourcex.ResourceFlag
 	// HTTPOptions
 	HTTPOptions *HTTPOptions
 	// GRPCOptions
@@ -25,8 +25,8 @@ type options struct {
 	ZipkinOptions *ZipkinOptions
 	// WriterOptions
 	WriterOptions *WriterOptions
-	// SampleRate 采样率
-	SampleRate float64
+	// Sampler 自定义Sampler
+	Sampler sdktrace.Sampler
 	// IDGenerator 自定义id生成器
 	IDGenerator sdktrace.IDGenerator
 	// SpanProcessor 自定义span处理器
@@ -65,7 +65,7 @@ func Attributes(attrs ...attribute.KeyValue) Option {
 	}
 }
 
-func Resources(res int) Option {
+func Resources(res resourcex.ResourceFlag) Option {
 	return func(o *options) {
 		o.Resources = res
 	}
@@ -101,9 +101,9 @@ func HTTP(httpOptions *HTTPOptions) Option {
 	}
 }
 
-func SampleRate(rate float64) Option {
+func Sampler(sampler sdktrace.Sampler) Option {
 	return func(o *options) {
-		o.SampleRate = rate
+		o.Sampler = sampler
 	}
 }
 

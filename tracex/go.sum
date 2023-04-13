@@ -68,6 +68,8 @@ github.com/go-leo/gox v0.0.0-20230403061358-ffb4dcdc50bb h1:ZMvPDt7hMQLHOGg2FNW4
 github.com/go-leo/gox v0.0.0-20230403061358-ffb4dcdc50bb/go.mod h1:p9YTdGhWGrnmpb26aD4oL24VQ+sbADI73RvNfQbqsUQ=
 github.com/go-leo/otelx/resourcex v0.0.0-20230413111800-c5fe83f6769d h1:H0qT293KJoDQsG0sgKF6mG50lv6lnhrbWGezDMyrcuI=
 github.com/go-leo/otelx/resourcex v0.0.0-20230413111800-c5fe83f6769d/go.mod h1:IGwRJSgZ7NwWtR1XSoTyRjw501S6rmFvW/SkrkO5bIc=
+github.com/go-leo/otelx/resourcex v0.0.0-20230413115446-2508cb3df328 h1:JMY6Xplm913+izr1Zb+d6O3kDcRPuPLL0gXGWSJYWzQ=
+github.com/go-leo/otelx/resourcex v0.0.0-20230413115446-2508cb3df328/go.mod h1:eYIo0rGeXBIvrQlwbxG1WY385iCSu536nYgZtMz9yJA=
 github.com/go-leo/stringx v1.0.0 h1:SqFlg20hBwZbQ0GcaTcy5TtMMK8i++Aa1/xVtxUjtCg=
 github.com/go-leo/stringx v1.0.0/go.mod h1:3EdJ8CukcBUg8rrVRhRVJfF37uYAytcL9w5MWK1MWBg=
 github.com/go-logr/logr v1.2.2/go.mod h1:jdQByPbusPIv2/zmleS9BjJVeZ6kBagPoEUsqbVz/1A=

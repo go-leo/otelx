@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/go-leo/gox v0.0.0-20230403061358-ffb4dcdc50bb
-	github.com/go-leo/otelx/resourcex v0.0.0-20230413111800-c5fe83f6769d
+	github.com/go-leo/otelx/resourcex v0.0.0-20230413115446-2508cb3df328
 	go.opentelemetry.io/otel v1.14.0
 	go.opentelemetry.io/otel/exporters/jaeger v1.14.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.14.0

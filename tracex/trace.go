@@ -46,8 +46,10 @@ func NewTrace(ctx context.Context, opts ...Option) (*Trace, error) {
 
 	tpOpts := []sdktrace.TracerProviderOption{
 		sdktrace.WithBatcher(exporter, bcOpts...),
-		sdktrace.WithSampler(sdktrace.ParentBased(newSample(o.SampleRate))),
 		sdktrace.WithResource(resourcex.NewResource(ctx, o.Service, o.Resources, o.Attributes...)),
+	}
+	if o.Sampler != nil {
+		tpOpts = append(tpOpts, sdktrace.WithSampler(o.Sampler))
 	}
 	if o.IDGenerator != nil {
 		tpOpts = append(tpOpts, sdktrace.WithIDGenerator(o.IDGenerator))

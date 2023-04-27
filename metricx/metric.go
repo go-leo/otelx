@@ -3,11 +3,10 @@ package metricx
 import (
 	"context"
 	"errors"
-
+	"github.com/go-leo/otelx/resourcex"
+	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
-
-	"github.com/go-leo/otelx/resourcex"
 )
 
 type Metric struct {
@@ -38,17 +37,37 @@ func NewMetric(ctx context.Context, opts ...Option) (*Metric, error) {
 	meterProvider := sdkmetric.NewMeterProvider(
 		sdkmetric.WithResource(resourcex.NewResource(ctx, o.Service, o.Resources, o.Attributes...)),
 		sdkmetric.WithReader(exporter),
-		sdkmetric.WithView(newViews()...),
+		sdkmetric.WithView(newView()),
 	)
 	return &Metric{meterProvider: meterProvider}, nil
 }
 
-func newViews(viewOpts ...ViewOption) []sdkmetric.View {
-	var views []sdkmetric.View
-	for _, opt := range viewOpts {
-		views = append(views, sdkmetric.NewView(opt.Criteria, opt.Mask))
+func allowedAttr(v ...string) attribute.Filter {
+	m := make(map[string]struct{}, len(v))
+	for _, s := range v {
+		m[s] = struct{}{}
 	}
-	return views
+	return func(kv attribute.KeyValue) bool {
+		_, ok := m[string(kv.Key)]
+		return ok
+	}
+}
+
+func newView() sdkmetric.View {
+	opt := ViewOption{
+		Criteria: sdkmetric.Instrument{
+			Name: "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc",
+		},
+		Mask: sdkmetric.Stream{
+			AttributeFilter: allowedAttr(
+				"rpc.grpc.status.code",
+				"rpc.method",
+				"rpc.service",
+				"rpc.system",
+			),
+		},
+	}
+	return sdkmetric.NewView(opt.Criteria, opt.Mask)
 }
 
 func (metric *Metric) MeterProvider() metric.MeterProvider {

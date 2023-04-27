@@ -6,6 +6,7 @@ import (
 	"github.com/go-leo/otelx/resourcex"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/metric"
+	"go.opentelemetry.io/otel/sdk/instrumentation"
 	sdkmetric "go.opentelemetry.io/otel/sdk/metric"
 )
 
@@ -56,7 +57,9 @@ func allowedAttr(v ...string) attribute.Filter {
 func newView() sdkmetric.View {
 	opt := ViewOption{
 		Criteria: sdkmetric.Instrument{
-			Name: "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc",
+			Scope: instrumentation.Scope{
+				Name: "go.opentelemetry.io/contrib/instrumentation/google.golang.org/grpc/otelgrpc",
+			},
 		},
 		Mask: sdkmetric.Stream{
 			AttributeFilter: allowedAttr(

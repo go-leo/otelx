@@ -4,7 +4,7 @@ go 1.18
 
 require (
 	github.com/go-leo/gox v0.0.0-20230403061358-ffb4dcdc50bb
-	github.com/go-leo/otelx/resourcex v0.0.0-20230413115446-2508cb3df328
+	github.com/go-leo/otelx/resourcex v0.1.1-sub2
 	go.opentelemetry.io/otel v1.14.0
 	go.opentelemetry.io/otel/exporters/jaeger v1.14.0
 	go.opentelemetry.io/otel/exporters/otlp/otlptrace/otlptracegrpc v1.14.0
@@ -14,6 +14,10 @@ require (
 	go.opentelemetry.io/otel/sdk v1.14.0
 	go.opentelemetry.io/otel/trace v1.14.0
 	google.golang.org/grpc v1.53.0
+)
+
+replace (
+	github.com/go-leo/otelx/resourcex => ../resourcex
 )
 
 require (

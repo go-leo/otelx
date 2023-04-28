@@ -18,7 +18,7 @@ type options struct {
 	// Attributes
 	Attributes []attribute.KeyValue
 	// Resources
-	Resources int
+	Resources resourcex.ResourceFlag
 	// HTTPOptions
 	HTTPOptions *HTTPOptions
 	// GRPCOptions
@@ -55,7 +55,7 @@ func Attributes(attrs ...attribute.KeyValue) Option {
 	}
 }
 
-func Resources(res int) Option {
+func Resources(res resourcex.ResourceFlag) Option {
 	return func(o *options) {
 		o.Resources = res
 	}
